@@ -3,16 +3,18 @@ async function handleStart(ctx) {
     [
       'Assalomu alaykum!',
       '',
-      'Bu bot orqali ovozli xabarlaringizni saqlab, keyin ularni inline qidiruv orqali istalgan chatga yuborishingiz mumkin.',
+      'Bu bot orqali voice xabarlarni saqlab, keyin inline qidiruv orqali istalgan chatga yuborishingiz mumkin.',
       '',
-      '1. Botga shaxsiy chatda voice yuboring.',
-      '2. Bot sizdan sarlavha yoki qidiruv so‘zlarini so‘raydi.',
-      '3. Voice xususiy saqlash kanaliga joylanadi va SQLite bazasida indekslanadi.',
+      'Voice yuboring yoki video/video note yuboring. Video yuborilsa, bot undagi ovozni voice formatiga aylantiradi.',
+      '',
+      '1. Botga shaxsiy chatda voice yoki video yuboring.',
+      '2. Bot sizdan sarlavha yoki qidiruv sozlarini soraydi.',
+      '3. Tayyor voice xususiy saqlash kanaliga joylanadi va SQLite bazasida indekslanadi.',
       '',
       'Keyin istalgan chatda shunday yozing:',
-      '@botusername qidiruv so‘zlari',
+      '@botusername qidiruv sozlari',
       '',
-      'Inline natijalarda voice xabarni yuborishdan oldin tinglab ko‘rishingiz mumkin.'
+      'Inline natijalarda voice xabarni yuborishdan oldin tinglab korishingiz mumkin.',
     ].join('\n')
   );
 }
@@ -20,25 +22,28 @@ async function handleStart(ctx) {
 async function handleHelp(ctx) {
   await ctx.reply(
     [
-      'Foydalanish bo‘yicha qo‘llanma:',
+      'Foydalanish boyicha qollanma:',
       '',
-      'Voice qo‘shish:',
+      'Voice qoshish:',
       'Botga shaxsiy chatda Telegram voice xabar yuboring.',
       '',
-      'Qidiruv so‘zlari:',
-      'Voice yuborgandan keyin sarlavha yoki kalit so‘zlarni yozing. Masalan: Assalomu alaykum greeting hello',
+      'Videodan voice qoshish:',
+      'Botga video yoki video note yuboring. Saqlash vaqtida video ichidagi audio voice formatiga aylantiriladi.',
+      '',
+      'Qidiruv sozlari:',
+      'Media yuborgandan keyin sarlavha yoki kalit sozlarni yozing. Masalan: Assalomu alaykum greeting hello',
       '',
       'Matnsiz saqlash:',
-      'Voice yuborgandan keyin “Matnsiz saqlash” tugmasini bosing.',
+      'Media yuborgandan keyin "Matnsiz saqlash" tugmasini bosing.',
       '',
       'Bekor qilish:',
-      '“Bekor qilish” tugmasini bosing yoki /cancel yozing.',
+      '"Bekor qilish" tugmasini bosing yoki /cancel yozing.',
       '',
       'Inline qidiruv:',
-      'Istalgan Telegram chatida @botusername so‘z deb yozing.',
+      'Istalgan Telegram chatida @botusername soz deb yozing.',
       '',
       'Preview va yuborish:',
-      'Inline natijalarda voice xabarni tinglab ko‘rib, keraklisini tanlang.'
+      'Inline natijalarda voice xabarni tinglab korib, keraklisini tanlang.',
     ].join('\n')
   );
 }

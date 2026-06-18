@@ -1,7 +1,7 @@
 const { Telegraf } = require('telegraf');
 const { config } = require('../lib/config');
 const { handleStart, handleHelp } = require('./handlers/start.handler');
-const { handleVoice } = require('./handlers/voice.handler');
+const { handleVoice, handleVideoAsVoice } = require('./handlers/voice.handler');
 const { handleText, handleCancelCommand } = require('./handlers/text.handler');
 const { handleSaveWithoutText, handleCancelVoice } = require('./handlers/action.handler');
 const { handleInlineQuery } = require('./handlers/inline.handler');
@@ -13,6 +13,8 @@ bot.start(handleStart);
 bot.help(handleHelp);
 bot.command('cancel', handleCancelCommand);
 bot.on('voice', handleVoice);
+bot.on('video', handleVideoAsVoice);
+bot.on('video_note', handleVideoAsVoice);
 bot.on('text', handleText);
 bot.action('save_without_text', handleSaveWithoutText);
 bot.action('cancel_voice', handleCancelVoice);
@@ -28,7 +30,7 @@ bot.catch(async (error, ctx) => {
 
   try {
     if (ctx && ctx.chat) {
-      await ctx.reply('Xatolik yuz berdi. Iltimos, keyinroq qayta urinib ko‘ring.');
+      await ctx.reply('Xatolik yuz berdi. Iltimos, keyinroq qayta urinib koring.');
     }
   } catch (replyError) {
     console.error('Failed to send user-friendly Telegram error:', replyError.message);

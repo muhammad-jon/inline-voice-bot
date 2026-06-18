@@ -2,7 +2,7 @@
 
 A production-ready Telegram inline voice bot built with Node.js, Express, Telegraf, Prisma, SQLite, dotenv, CommonJS, long polling, and nodemon.
 
-The bot lets users submit Telegram voice messages in private chat. Approved voices are posted into a private Telegram storage channel, indexed in SQLite, and returned later through Telegram inline mode as cached voice results that can be previewed before sending.
+The bot lets users submit Telegram voice messages in private chat. Users can also submit videos or video notes; the bot extracts the audio and stores the result as a Telegram voice message. Approved voices are posted into a private Telegram storage channel, indexed in SQLite, and returned later through Telegram inline mode as cached voice results that can be previewed before sending.
 
 ## Architecture
 
@@ -10,7 +10,7 @@ The bot lets users submit Telegram voice messages in private chat. Approved voic
 - SQLite: metadata, search index, moderation status, and usage statistics.
 - Telegram `file_id`: cached voice reference used for inline results.
 
-The bot never downloads voice audio and never stores audio files locally. SQLite stores only metadata such as file IDs, uploader details, titles, search text, status, counters, and timestamps.
+The bot never stores final audio files locally. Normal voice messages are forwarded by Telegram `file_id`. Videos and video notes are downloaded only into a temporary OS folder, converted to `.ogg` Opus with `ffmpeg-static`, sent as Telegram voice messages, and then deleted. SQLite stores only metadata such as file IDs, source file IDs, uploader details, titles, search text, status, counters, and timestamps.
 
 Telegram channels cannot replace SQLite search because the Bot API does not provide a normal full-history channel search API. Inline queries must use the SQLite index.
 
@@ -121,7 +121,7 @@ Express endpoints:
 Submit a voice:
 
 1. Open the bot in a private chat.
-2. Send a Telegram voice message.
+2. Send a Telegram voice message, video, or video note.
 3. Send a title or keywords, or press `Matnsiz saqlash`.
 4. Confirm the voice appears in the private storage channel.
 5. Confirm a row appears in SQLite.
@@ -136,7 +136,7 @@ Test inline search:
 
 ## Notes
 
-- Duplicate voices are blocked by Telegram `file_unique_id`.
+- Duplicate voices and source videos are blocked by Telegram `file_unique_id`.
 - Inline results use `InlineQueryResultCachedVoice`.
 - Only private chat voice submissions are accepted.
 - Search text is normalized to lowercase for SQLite-compatible matching.

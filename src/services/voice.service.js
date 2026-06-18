@@ -17,12 +17,13 @@ function isCommandText(text) {
   return text.trim().startsWith('/');
 }
 
-async function upsertPendingVoice({ telegramId, voice, uploaderUsername, uploaderFirstName }) {
+async function upsertPendingVoice({ telegramId, voice, mediaType = 'VOICE', uploaderUsername, uploaderFirstName }) {
   return prisma.pendingVoice.upsert({
     where: { telegramId },
     update: {
       originalFileId: voice.file_id,
       originalFileUniqueId: voice.file_unique_id,
+      mediaType,
       duration: voice.duration || null,
       uploaderUsername,
       uploaderFirstName,
@@ -32,6 +33,7 @@ async function upsertPendingVoice({ telegramId, voice, uploaderUsername, uploade
       telegramId,
       originalFileId: voice.file_id,
       originalFileUniqueId: voice.file_unique_id,
+      mediaType,
       duration: voice.duration || null,
       uploaderUsername,
       uploaderFirstName,
@@ -52,8 +54,13 @@ async function deletePendingVoice(telegramId) {
 }
 
 async function findDuplicateVoice(fileUniqueId) {
-  return prisma.voice.findUnique({
-    where: { fileUniqueId },
+  return prisma.voice.findFirst({
+    where: {
+      OR: [
+        { fileUniqueId },
+        { sourceFileUniqueId: fileUniqueId },
+      ],
+    },
   });
 }
 
@@ -99,6 +106,9 @@ async function persistPendingVoice(ctx, telegramId, { title, searchText }) {
       data: {
         fileId: storedVoice.fileId,
         fileUniqueId: storedVoice.fileUniqueId,
+        sourceFileId: pendingVoice.originalFileId,
+        sourceFileUniqueId: pendingVoice.originalFileUniqueId,
+        sourceType: pendingVoice.mediaType || 'VOICE',
         channelMessageId: sentMessage.message_id,
         channelChatId: String(sentMessage.chat.id),
         title,

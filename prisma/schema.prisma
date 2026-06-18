@@ -10,6 +10,9 @@ model Voice {
   id                 Int         @id @default(autoincrement())
   fileId             String
   fileUniqueId       String      @unique
+  sourceFileId       String?
+  sourceFileUniqueId String?     @unique
+  sourceType         String      @default("VOICE")
   channelMessageId   Int
   channelChatId      String
   title              String?
@@ -33,6 +36,7 @@ model PendingVoice {
   telegramId           String   @unique
   originalFileId       String
   originalFileUniqueId String
+  mediaType            String   @default("VOICE")
   duration             Int?
   uploaderUsername     String?
   uploaderFirstName    String?

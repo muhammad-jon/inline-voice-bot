@@ -1,4 +1,6 @@
 const { config } = require('../lib/config');
+const { Input } = require('telegraf');
+const { createVoiceFromTelegramVideo } = require('./media-conversion.service');
 
 function formatUploader(username, telegramId) {
   return username ? `@${username}` : `Telegram ID ${telegramId}`;
@@ -26,9 +28,23 @@ async function saveVoiceToStorageChannel(ctx, pendingVoice, metadata) {
     uploaderTelegramId: pendingVoice.telegramId,
   });
 
-  return ctx.telegram.sendVoice(config.storageChannelId, pendingVoice.originalFileId, {
-    caption,
-  });
+  if (pendingVoice.mediaType === 'VOICE') {
+    return ctx.telegram.sendVoice(config.storageChannelId, pendingVoice.originalFileId, {
+      caption,
+    });
+  }
+
+  const convertedVoice = await createVoiceFromTelegramVideo(ctx, pendingVoice.originalFileId);
+
+  try {
+    return await ctx.telegram.sendVoice(
+      config.storageChannelId,
+      Input.fromLocalFile(convertedVoice.outputPath, 'voice.ogg'),
+      { caption }
+    );
+  } finally {
+    await convertedVoice.cleanup();
+  }
 }
 
 async function deleteStorageMessage(ctx, chatId, messageId) {
