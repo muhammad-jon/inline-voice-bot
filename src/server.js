@@ -14,8 +14,14 @@ async function start() {
   const app = createApp();
   server = http.createServer(app);
 
-  await new Promise((resolve) => {
-    server.listen(config.port, resolve);
+  await new Promise((resolve, reject) => {
+    const onError = (error) => reject(error);
+
+    server.once('error', onError);
+    server.listen(config.port, () => {
+      server.off('error', onError);
+      resolve();
+    });
   });
 
   console.log(`Express server listening on port ${config.port}`);
