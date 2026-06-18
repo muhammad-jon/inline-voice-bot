@@ -1,0 +1,11 @@
+[variables]
+NIXPACKS_NODE_VERSION = "22.12"
+
+[phases.install]
+cmds = ["npm ci"]
+
+[phases.build]
+cmds = ["npm run prisma:generate"]
+
+[start]
+cmd = "npm start"
