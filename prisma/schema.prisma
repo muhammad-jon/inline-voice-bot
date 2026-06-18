@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum VoiceStatus {
+  ACTIVE
+  BLOCKED
+  DELETED
+}
+
+model Voice {
+  id                 Int         @id @default(autoincrement())
+  fileId             String
+  fileUniqueId       String      @unique
+  channelMessageId   Int
+  channelChatId      String
+  title              String?
+  searchText         String?
+  uploaderTelegramId String
+  uploaderUsername   String?
+  uploaderFirstName  String?
+  duration           Int?
+  status             VoiceStatus @default(ACTIVE)
+  usageCount         Int         @default(0)
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+
+  @@index([status, usageCount, createdAt])
+  @@index([title])
+  @@index([searchText])
+}
+
+model PendingVoice {
+  id                   Int      @id @default(autoincrement())
+  telegramId           String   @unique
+  originalFileId       String
+  originalFileUniqueId String
+  duration             Int?
+  uploaderUsername     String?
+  uploaderFirstName    String?
+  createdAt            DateTime @default(now())
+}
