@@ -1,14 +1,15 @@
 const http = require('http');
 const createApp = require('./app');
-const bot = require('./bot/bot');
 const prisma = require('./lib/prisma');
 const { config, validateConfig } = require('./lib/config');
 
 let server;
+let bot;
 let shuttingDown = false;
 
 async function start() {
   validateConfig();
+  bot = require('./bot/bot');
 
   const app = createApp();
   server = http.createServer(app);
@@ -35,7 +36,9 @@ async function shutdown(signal) {
   console.log(`Received ${signal}. Shutting down...`);
 
   try {
-    bot.stop(signal);
+    if (bot) {
+      bot.stop(signal);
+    }
   } catch (error) {
     console.error('Failed to stop Telegram bot cleanly:', error.message);
   }

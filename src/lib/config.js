@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ quiet: true });
 
 const requiredEnv = ['BOT_TOKEN', 'STORAGE_CHANNEL_ID'];
 

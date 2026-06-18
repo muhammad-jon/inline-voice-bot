@@ -6,12 +6,6 @@ datasource db {
   provider = "sqlite"
 }
 
-enum VoiceStatus {
-  ACTIVE
-  BLOCKED
-  DELETED
-}
-
 model Voice {
   id                 Int         @id @default(autoincrement())
   fileId             String
@@ -24,7 +18,7 @@ model Voice {
   uploaderUsername   String?
   uploaderFirstName  String?
   duration           Int?
-  status             VoiceStatus @default(ACTIVE)
+  status             String      @default("ACTIVE")
   usageCount         Int         @default(0)
   createdAt          DateTime    @default(now())
   updatedAt          DateTime    @updatedAt
