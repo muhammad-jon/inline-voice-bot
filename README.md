@@ -50,6 +50,12 @@ DATABASE_URL="file:./dev.db"
 
 `BOT_TOKEN` and `STORAGE_CHANNEL_ID` are required. Startup fails clearly if either is missing.
 
+For Coolify or Docker, point SQLite to a persistent mounted path instead of `./dev.db`:
+
+```env
+DATABASE_URL="file:/app/data/dev.db"
+```
+
 ## Telegram Setup
 
 Create the bot:
@@ -125,6 +131,8 @@ Production:
 npm start
 ```
 
+`npm start` now creates the SQLite directory if needed and runs `prisma migrate deploy` before starting the bot.
+
 Express endpoints:
 
 - `GET /`
@@ -159,11 +167,17 @@ Test inline search:
 
 ## Docker And Backups
 
-If you run this in Docker, mount a volume for the SQLite file and migrations, for example:
+If you run this in Docker or Coolify, mount a persistent volume for the SQLite file, for example:
 
 ```text
-/app/prisma/dev.db
+/app/data/dev.db
 ```
+
+Recommended Coolify setup:
+
+1. Add a persistent storage mount such as `/app/data`.
+2. Set `DATABASE_URL` to `file:/app/data/dev.db`.
+3. Start the app normally with `npm start`.
 
 Back up both:
 
