@@ -1,3 +1,8 @@
+function getInlineExample(ctx) {
+  const username = ctx.botInfo && ctx.botInfo.username ? ctx.botInfo.username : 'your_bot_username';
+  return `@${username} soz`;
+}
+
 async function handleStart(ctx) {
   await ctx.reply(
     [
@@ -12,7 +17,7 @@ async function handleStart(ctx) {
       '3. Tayyor voice xususiy saqlash kanaliga joylanadi va SQLite bazasida indekslanadi.',
       '',
       'Keyin istalgan chatda shunday yozing:',
-      '@botusername qidiruv sozlari',
+      getInlineExample(ctx),
       '',
       'Inline natijalarda voice xabarni yuborishdan oldin tinglab korishingiz mumkin.',
     ].join('\n')
@@ -37,7 +42,7 @@ async function handleHelp(ctx) {
       '"Bekor qilish" tugmasini bosing yoki /cancel yozing.',
       '',
       'Inline qidiruv:',
-      'Istalgan Telegram chatida @botusername soz deb yozing.',
+      `Istalgan Telegram chatida ${getInlineExample(ctx)} deb yozing.`,
       '',
       'Preview va yuborish:',
       'Inline natijalarda voice xabarni tinglab korib, keraklisini tanlang.',
