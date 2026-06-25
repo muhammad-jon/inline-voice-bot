@@ -22,7 +22,7 @@ async function handleVoice(ctx) {
     [
       'Voice qabul qilindi.',
       '',
-      'Endi sarlavha yoki qidiruv kalit sozlarini yuboring.',
+      'Endi kamida 10 ta belgidan iborat sarlavha yoki qidiruv kalit so\'zlarini yuboring.',
       '',
       'Masalan:',
       'Assalomu alaykum greeting hello',
@@ -54,7 +54,7 @@ async function handleVideoAsVoice(ctx) {
       'Video qabul qilindi.',
       '',
       'Saqlash vaqtida videodagi ovoz voice formatiga aylantiriladi.',
-      'Endi sarlavha yoki qidiruv kalit sozlarini yuboring.',
+      'Endi kamida 10 ta belgidan iborat sarlavha yoki qidiruv kalit so\'zlarini yuboring.',
       '',
       'Masalan:',
       'kulgi hazil funny',

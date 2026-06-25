@@ -122,7 +122,7 @@ Submit a voice:
 
 1. Open the bot in a private chat.
 2. Send a Telegram voice message, video, or video note.
-3. Send a title or keywords, or press `Matnsiz saqlash`.
+3. Send a title or keywords with at least 10 characters.
 4. Confirm the voice appears in the private storage channel.
 5. Confirm a row appears in SQLite.
 

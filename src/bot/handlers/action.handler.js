@@ -1,6 +1,5 @@
 const {
   deletePendingVoice,
-  persistPendingVoice,
 } = require('../../services/voice.service');
 
 async function safeEditOrReply(ctx, message) {
@@ -14,27 +13,10 @@ async function safeEditOrReply(ctx, message) {
 async function handleSaveWithoutText(ctx) {
   await ctx.answerCbQuery();
 
-  const result = await persistPendingVoice(ctx, String(ctx.from.id), {
-    title: 'Voice message',
-    searchText: null,
-  });
-
-  if (result.status === 'missing_pending') {
-    await safeEditOrReply(ctx, 'Saqlash uchun voice topilmadi. Avval voice xabar yuboring.');
-    return;
-  }
-
-  if (result.status === 'duplicate') {
-    await safeEditOrReply(ctx, 'Bu voice avval saqlangan. Dublikat yaratilmadi.');
-    return;
-  }
-
-  if (result.status === 'failed') {
-    await safeEditOrReply(ctx, 'Voice saqlanmadi. Iltimos, keyinroq qayta urinib ko‘ring.');
-    return;
-  }
-
-  await safeEditOrReply(ctx, 'Voice matnsiz muvaffaqiyatli saqlandi.');
+  await safeEditOrReply(
+    ctx,
+    "Voice saqlash uchun matn majburiy. Kamida 10 ta belgi yuboring yoki 'Bekor qilish' tugmasini bosing."
+  );
 }
 
 async function handleCancelVoice(ctx) {

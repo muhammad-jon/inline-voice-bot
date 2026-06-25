@@ -1,4 +1,5 @@
 const {
+  MIN_SEARCH_TEXT_LENGTH,
   MAX_SEARCH_TEXT_LENGTH,
   buildTitle,
   deletePendingVoice,
@@ -21,7 +22,12 @@ async function handleText(ctx) {
   const trimmed = text.trim();
 
   if (!trimmed) {
-    await ctx.reply('Matn bo‘sh bo‘lmasligi kerak. Qidiruv so‘zlarini yuboring yoki /cancel yozing.');
+    await ctx.reply("Matn bo'sh bo'lmasligi kerak. Kamida 10 ta belgi yozing yoki /cancel yozing.");
+    return;
+  }
+
+  if (trimmed.length < MIN_SEARCH_TEXT_LENGTH) {
+    await ctx.reply(`Matn juda qisqa. Kamida ${MIN_SEARCH_TEXT_LENGTH} ta belgi yozing.`);
     return;
   }
 
@@ -36,7 +42,7 @@ async function handleText(ctx) {
   });
 
   if (result.status === 'missing_pending') {
-    await ctx.reply('Avval voice xabar yuboring, keyin qidiruv so‘zlarini yozing.');
+    await ctx.reply("Avval voice xabar yuboring, keyin qidiruv so'zlarini yozing.");
     return;
   }
 
@@ -46,7 +52,7 @@ async function handleText(ctx) {
   }
 
   if (result.status === 'failed') {
-    await ctx.reply('Voice saqlanmadi. Iltimos, keyinroq qayta urinib ko‘ring.');
+    await ctx.reply("Voice saqlanmadi. Iltimos, keyinroq qayta urinib ko'ring.");
     return;
   }
 

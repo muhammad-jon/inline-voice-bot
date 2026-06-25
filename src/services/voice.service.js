@@ -1,6 +1,7 @@
 const prisma = require('../lib/prisma');
 const { saveVoiceToStorageChannel, deleteStorageMessage } = require('./storage-channel.service');
 
+const MIN_SEARCH_TEXT_LENGTH = 10;
 const MAX_SEARCH_TEXT_LENGTH = 200;
 const MAX_INLINE_QUERY_LENGTH = 100;
 
@@ -208,6 +209,7 @@ async function incrementUsageCount(id) {
 }
 
 module.exports = {
+  MIN_SEARCH_TEXT_LENGTH,
   MAX_SEARCH_TEXT_LENGTH,
   MAX_INLINE_QUERY_LENGTH,
   normalizeSearchText,
