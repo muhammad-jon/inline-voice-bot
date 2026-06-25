@@ -91,6 +91,20 @@ npm run prisma:migrate
 npm run prisma:generate
 ```
 
+For existing databases, `npm run prisma:migrate` is the safe command because it runs `prisma migrate deploy` and does not reset local data.
+
+Only use the dev migration flow when you are intentionally changing the schema:
+
+```bash
+npm run prisma:migrate:dev
+```
+
+If you only want to sync schema changes to SQLite without creating a migration, use:
+
+```bash
+npm run prisma:push
+```
+
 Open Prisma Studio when needed:
 
 ```bash
@@ -165,5 +179,6 @@ The channel stores the voice posts, while SQLite stores the searchable index and
 - Inline results do not appear: enable inline mode with BotFather `/setinline`.
 - Usage count does not change: enable inline feedback with `/setinlinefeedback`.
 - Channel ID errors: confirm the ID starts with `-100` for private channels.
-- Prisma connection errors: check `DATABASE_URL` and run migrations.
+- Prisma connection errors: check `DATABASE_URL` and run `npm run prisma:migrate`.
+- Avoid running `prisma migrate dev` against a database with important data unless you understand the reset prompt and have a backup.
 - No voice preview: confirm inline results are returned as cached voice results with valid Telegram `file_id`.
